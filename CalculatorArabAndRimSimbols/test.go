@@ -63,6 +63,9 @@ func romanToArabic(roman string) (int, error) {
 
 // Функция для выполнения математических операций
 func calculate(a, b int, op string) (int, error) {
+	if a > 10 || b > 10 || a < 1 || b < 1 {
+		return 0, errors.New("Калькулятор должен принимать на вход числа от 1 до 10 включительно, не больше и не меньше.")
+	}
 	switch op {
 	case "+":
 		return a + b, nil
@@ -91,9 +94,11 @@ func main() {
 
 	input = strings.TrimSpace(input)
 	tokens := strings.Split(input, " ")
-	if len(tokens) != 3 {
-		fmt.Println("Неверный формат ввода")
+	if len(tokens) == 1 {
+		fmt.Println("Введенная строка не является математической операцией")
 		return
+	} else if len(tokens) > 3 {
+		fmt.Println("Формат математической операции не удовлетворяет заданию — два операнда и один оператор (+, -, /, *).")
 	}
 
 	var a, b int
@@ -103,7 +108,7 @@ func main() {
 	if err != nil {
 		a, err = romanToArabic(tokens[0])
 		if err != nil {
-			fmt.Println("Ошибка конветирования чисел:", err)
+			fmt.Println("Ошибка конвертирования чисел:", err)
 			return
 		}
 		romanA = true
@@ -120,7 +125,7 @@ func main() {
 	}
 
 	if romanA != romanB {
-		fmt.Println("Введенные числа должны быть одной системы исчисления")
+		fmt.Println("Введенные числа должны быть одной системы счисления")
 		return
 	}
 
@@ -132,7 +137,7 @@ func main() {
 
 	if romanA {
 		if result <= 0 {
-			fmt.Println("Числа не могут быт отрицательными")
+			fmt.Println("В римской системе счисления нет отрицательных чисел")
 			return
 		}
 		fmt.Println("Result:", arabicToRoman(result))
